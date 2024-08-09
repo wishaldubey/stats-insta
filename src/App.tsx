@@ -46,18 +46,14 @@ interface UserMessages {
 
 // Decode Unicode function
 const decodeUnicode = (unicodeString: string): string => {
-  if (!unicodeString) return "";
-
-  // Convert unicode escape sequences to a byte string
-  const byteString = unicodeString.replace(
-    /\\u([0-9a-fA-F]{4})/g,
-    (match, p1) => {
-      return String.fromCharCode(parseInt(p1, 16));
-    }
-  );
-
-  // Decode the byte string to UTF-8
-  return utf8.decode(byteString);
+  try {
+    return decodeURIComponent(
+      unicodeString.replace(/\\u([0-9a-fA-F]{4})/g, "%u$1")
+    );
+  } catch (error) {
+    console.error("Error decoding Unicode string:", unicodeString, error);
+    return unicodeString; // Return the original string if decoding fails
+  }
 };
 
 // Format timestamp function
