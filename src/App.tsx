@@ -467,7 +467,8 @@ const App: React.FC = () => {
           <li>Extract the contents.</li>
           <li>
             Go to{" "}
-            <a href="https://chatcharts.co.uk/">https://chatcharts.co.uk/</a>.
+            <a href="https://stats-insta.vercel.app/">stats-insta.vercel.app</a>
+            .
           </li>
           <li>Click the merger button below.</li>
           <li>
