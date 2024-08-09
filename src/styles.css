@@ -1,0 +1,63 @@
+.message-list {
+  margin-top: 20px;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin-bottom: 10px;
+}
+
+.message-wrapper.you {
+  align-items: flex-end;
+}
+
+.message-wrapper.other {
+  align-items: flex-start;
+}
+
+.message-bubble {
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 100%;
+  word-break: break-word;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.message-bubble.you {
+  background-color: #ADD8E6;
+  /* Light blue color */
+}
+
+.message-bubble.other {
+  background-color: rgb(58, 166, 255);
+  /* Dark gray color */
+}
+
+.timestamp {
+  margin-top: 5px;
+  color: rgb(170, 170, 170);
+  text-align: center;
+}
+
+.how-to-use-button {
+  background-color: #00ff99;
+  /* Match the Upload button color */
+  color: #141414;
+  /* Text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 10px;
+  /* Add space below */
+}
