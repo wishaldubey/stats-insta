@@ -486,16 +486,11 @@ const App: React.FC = () => {
             <a href="https://stats-insta.vercel.app/">stats-insta.vercel.app</a>
             .
           </li>
-          <li>Click the merger button below.</li>
+          <li>Click on the "Upload JSON" button</li>
           <li>
             On your device, find the folder from the extracted file with your
             fellow chatter's name on it. Open this folder and select all the
             JSON files; upload it.
-          </li>
-          <li>It will give you one single JSON file; download it.</li>
-          <li>
-            Then click on the "Upload JSON" button and upload the newly
-            downloaded JSON file.
           </li>
           <li>Congrats, you've done it! 😁</li>
         </ol>
