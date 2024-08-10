@@ -177,49 +177,65 @@ const App: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
+    if (event.target.files && event.target.files.length > 0) {
+      const files = Array.from(event.target.files);
       const reader = new FileReader();
+      const userMessages: UserMessages = {};
 
-      reader.onload = (e) => {
-        try {
-          const json = JSON.parse(e.target?.result as string);
-          const messages = json.messages as Message[];
-          const userMessages: UserMessages = {};
+      const processFile = (file: File, resolve: () => void) => {
+        reader.onload = (e) => {
+          try {
+            const json = JSON.parse(e.target?.result as string);
+            const messages = json.messages as Message[];
 
-          messages.forEach((msg) => {
-            // Check if content and sender_name are defined and are strings
-            const content = msg.content || "";
-            const senderName = msg.sender_name || "";
+            messages.forEach((msg) => {
+              const content = msg.content || "";
+              const senderName = msg.sender_name || "";
 
-            try {
-              const decodedContent = utf8.decode(content);
-              const decodedSenderName = utf8.decode(senderName);
+              try {
+                const decodedContent = utf8.decode(content);
+                const decodedSenderName = utf8.decode(senderName);
 
-              if (!userMessages[decodedSenderName]) {
-                userMessages[decodedSenderName] = [];
+                if (!userMessages[decodedSenderName]) {
+                  userMessages[decodedSenderName] = [];
+                }
+
+                userMessages[decodedSenderName].push({
+                  ...msg,
+                  content: decodedContent,
+                  sender_name: decodedSenderName,
+                });
+              } catch (decodeError) {
+                console.error(
+                  "Error decoding message or sender name:",
+                  decodeError
+                );
               }
+            });
+            resolve();
+          } catch (error) {
+            console.error("Error parsing JSON file:", error);
+            resolve();
+          }
+        };
 
-              userMessages[decodedSenderName].push({
-                ...msg,
-                content: decodedContent,
-                sender_name: decodedSenderName,
-              });
-            } catch (decodeError) {
-              console.error(
-                "Error decoding message or sender name:",
-                decodeError
-              );
-            }
+        reader.readAsText(file);
+      };
+
+      let fileIndex = 0;
+
+      const processNextFile = () => {
+        if (fileIndex < files.length) {
+          processFile(files[fileIndex], () => {
+            fileIndex++;
+            processNextFile();
           });
-
+        } else {
           setData(userMessages);
-        } catch (error) {
-          console.error("Error parsing JSON file:", error);
         }
       };
 
-      reader.readAsText(file);
+      processNextFile();
     }
   };
 
@@ -359,7 +375,7 @@ const App: React.FC = () => {
       >
         How to Use
       </button>
-      <UploadInput onFileUpload={handleFileUpload} />
+      <UploadInput onFileUpload={handleFileUpload} multiple={true} />
       {data && (
         <div
           style={{
